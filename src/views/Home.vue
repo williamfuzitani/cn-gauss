@@ -18,7 +18,7 @@
       </v-col>
     </v-row>
 
-    <h1 class="mt-8">Sistema</h1>
+    <h2 class="mt-8">Sistema</h2>
     <v-row>
       <v-col>
         <v-row v-for="(row, irow) in valores" :key="irow">
@@ -43,7 +43,7 @@
       </v-col>
     </v-row>
 
-    <h1 class="mt-8">Resultado - {{ resultadoSistema }}</h1>
+    <h2 class="mt-8">Resultado - {{ resultadoSistema }}</h2>
     <v-row v-for="(etapa, index) in etapas" :key="index">
       <v-col>
         <v-card outlined>
@@ -117,6 +117,30 @@ function resolveGauss(A, b) {
 
   for (let linha_pivo = 0; linha_pivo < tamanho - 1; linha_pivo++) {
     let pivo_atual = A[linha_pivo][linha_pivo];
+
+    if (pivo_atual === 0) {
+      for (let linha = linha_pivo + 1; linha < tamanho; linha++) {
+        if (A[linha][linha_pivo] !== 0) {
+          let temp_A = A[linha];
+          let temp_b = b[linha];
+
+          A[linha] = A[linha_pivo];
+          A[linha_pivo] = temp_A;
+
+          b[linha] = b[linha_pivo];
+          b[linha_pivo] = temp_b;
+
+          let acao = `Troca L${linha} por L${linha_pivo}`;
+          etapas.push({
+            pivo: pivo_atual,
+            acao: acao,
+            matriz: cloneDeep(A),
+            coeficientes: cloneDeep(b),
+          });
+          break;
+        }
+      }
+    }
 
     for (let linha = linha_pivo + 1; linha < tamanho; linha++) {
       let multiplicador = A[linha][linha_pivo] / A[linha_pivo][linha_pivo];

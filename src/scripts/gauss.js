@@ -6,6 +6,12 @@ let matrizA = [
   [4, 9, 8, 7],
   [1, 1, 2, 2],
 ];
+// let matrizA = [
+//   [2, 3, -1, 4],
+//   [-1, 2, 7, 6],
+//   [4, 9, 8, 7],
+//   [1, 1, 2, 2],
+// ];
 
 let b = [5, 3, 9, -1];
 
@@ -18,6 +24,20 @@ function resolveGauss(A, b) {
   for (let linha_pivo = 0; linha_pivo < tamanho - 1; linha_pivo++) {
     let pivo_atual = A[linha_pivo][linha_pivo];
 
+    if (pivo_atual === 0) {
+      for (let linha = linha_pivo + 1; linha < tamanho; linha++) {
+        if (A[linha][linha_pivo] !== 0) {
+          let temp = A[linha];
+          A[linha] = A[linha_pivo];
+          A[linha_pivo] = temp;
+
+          let acao = `Troca L${linha_pivo} por L${linha}`;
+          etapas.push({ pivo: pivo_atual, acao: acao, matriz: A, coeficientes: b });
+          break;
+        }
+      }
+    }
+
     for (let linha = linha_pivo + 1; linha < tamanho; linha++) {
       let multiplicador = A[linha][linha_pivo] / A[linha_pivo][linha_pivo];
 
@@ -29,9 +49,9 @@ function resolveGauss(A, b) {
 
       b[linha] = b[linha] - multiplicador * b[linha_pivo];
 
-      console.log({ pivo: pivo_atual, acao: acao, matriz: A, coeficientes: b });
+      // console.log({ pivo: pivo_atual, acao: acao, matriz: A, coeficientes: b });
       etapas.push({ pivo: pivo_atual, acao: acao, matriz: A, coeficientes: b });
-      console.table(etapas);
+      // console.table(etapas);
     }
   }
 
